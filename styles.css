@@ -1,5 +1,5 @@
 :root {
-  --primary-color: #22a06b;
+  --primary-color: #3b22a0;
   --primary-dark: #116149;
   --primary-light: #dff8eb;
 
@@ -238,6 +238,10 @@ h1 {
   animation: evolve 0.9s ease;
 }
 
+.ecomon-area.evolution-celebration {
+  animation: evolution-background 0.9s ease;
+}
+
 @keyframes bounce {
   0%,
   100% {
@@ -272,6 +276,17 @@ h1 {
   100% {
     transform: scale(1);
     filter: brightness(1);
+  }
+}
+
+@keyframes evolution-background {
+  0%,
+  100% {
+    background: transparent;
+  }
+
+  50% {
+    background: var(--primary-light);
   }
 }
 

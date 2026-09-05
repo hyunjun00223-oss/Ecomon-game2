@@ -56,6 +56,7 @@ const missionButton = document.querySelector("#mission-button");
 const resetButton = document.querySelector("#reset-button");
 
 const ecomonEmoji = document.querySelector("#ecomon-emoji");
+const ecomonArea = document.querySelector("#ecomon-area");
 const ecomonName = document.querySelector("#ecomon-name");
 const ecomonMessage = document.querySelector("#ecomon-message");
 const stageBadge = document.querySelector("#stage-badge");
@@ -199,8 +200,10 @@ function playBounceAnimation() {
  */
 function playEvolutionAnimation() {
   ecomonEmoji.classList.remove("evolve");
+  ecomonArea.classList.remove("evolution-celebration");
   void ecomonEmoji.offsetWidth;
   ecomonEmoji.classList.add("evolve");
+  ecomonArea.classList.add("evolution-celebration");
 }
 
 /**
@@ -222,10 +225,33 @@ function playEvolutionAnimation() {
  */
 actionButtons.forEach(function (button) {
   button.addEventListener("click", function () {
-    statusMessage.textContent =
-      "아직 환경 실천 기능이 완성되지 않았습니다. MISSION.md를 확인하세요.";
+    const action = button.dataset.action;
+    const points = Number(button.dataset.points);
+    const previousStageIndex = getCurrentStageIndex();
 
-    // TODO: 이 부분에 환경 실천 기능을 작성하세요.
+    ecoScore += points;
+    actionCount += 1;
+
+    records.unshift({
+      action: action,
+      points: points
+    });
+
+    render();
+
+    const currentStageIndex = getCurrentStageIndex();
+
+    statusMessage.textContent =
+      `${action}을(를) 실천했습니다! 에코 점수 ${points}점을 얻었습니다.`;
+
+    if (currentStageIndex !== previousStageIndex) {
+      statusMessage.textContent =
+        `축하합니다! ${stages[currentStageIndex].name}으로 진화했어요! ${stages[currentStageIndex].emoji}`;
+      playEvolutionAnimation();
+    } else {
+      playBounceAnimation();
+    }
+
   });
 });
 
@@ -266,6 +292,7 @@ resetButton.addEventListener("click", function () {
   ecoScore = 0;
   actionCount = 0;
   records = [];
+  ecomonArea.classList.remove("evolution-celebration");
 
   actionButtons.forEach(function (button) {
     button.classList.remove("recommended");
